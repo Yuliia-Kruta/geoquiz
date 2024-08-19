@@ -33,12 +33,14 @@ class CheatActivity : AppCompatActivity() {
 
         if(cheatViewModel.isAnswerShown){
             binding.answerTextView.setText(cheatViewModel.answerText)
+            setAnswerShownResult()
         }
         binding.showAnswerButton.setOnClickListener{
             binding.answerTextView.setText(cheatViewModel.answerText)
             cheatViewModel.isAnswerShown = true
+            setAnswerShownResult()
         }
-        setAnswerShownResult()
+
     }
 
     private fun setAnswerShownResult(){
