@@ -15,7 +15,17 @@ class QuizViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel(
         Question(R.string.question_mideast, false),
         Question(R.string.question_africa, false),
         Question(R.string.question_americas, true),
-        Question(R.string.question_asia, true)
+        Question(R.string.question_asia, true),
+        Question(R.string.question_europe, false),
+        Question(R.string.question_pacific, false),
+        Question(R.string.question_antarctica, true),
+        Question(R.string.question_mountains, true),
+        Question(R.string.question_rivers, true),
+        Question(R.string.question_history, true),
+        Question(R.string.question_capitals, true),
+        Question(R.string.question_space, true),
+        Question(R.string.question_animals, false),
+        Question(R.string.question_energy, false)
     )
 
     private var cheatStatus: MutableList<Boolean>

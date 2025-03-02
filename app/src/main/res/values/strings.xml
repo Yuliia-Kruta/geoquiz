@@ -12,6 +12,16 @@
     <string name="question_africa">The source of the Nile River is in Egypt.</string>
     <string name="question_americas">The Amazon River is the longest river in the Americas.</string>
     <string name="question_asia">The Great Wall of China is located entirely within the country of China.</string>
+    <string name="question_europe">The Eiffel Tower is located in Germany.</string>
+    <string name="question_pacific">Hawaii is located in the Atlantic Ocean.</string>
+    <string name="question_antarctica">Antarctica is the only continent without a native human population.</string>
+    <string name="question_mountains">Mount Everest is the tallest mountain in the world.</string>
+    <string name="question_rivers">The Nile River is the longest river in the world.</string>
+    <string name="question_history">The Roman Empire fell in 476 AD.</string>
+    <string name="question_capitals">Tokyo is the capital of Japan.</string>
+    <string name="question_space">Jupiter is the largest planet in our solar system.</string>
+    <string name="question_animals">Penguins are only found in the Northern Hemisphere.</string>
+    <string name="question_energy">Nuclear energy is a renewable source of energy.</string>
     <string name="warning_text">Are you sure you want to do this?</string>
     <string name="show_answer_button">Show Answer</string>
     <string name="cheat_button">Cheat!</string>
