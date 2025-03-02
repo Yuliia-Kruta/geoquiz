@@ -1,13 +1,16 @@
 package com.yuliiakruta.geoquiz
 
 import android.app.Activity
-import android.content.Intent
+import android.graphics.RenderEffect
+import android.graphics.Shader
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -78,6 +81,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         updateQuestion()
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+            blurCheatBtn()
+        }
     }
 
     override fun onStart() {
@@ -126,6 +132,17 @@ class MainActivity : AppCompatActivity() {
         }
 
         Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show()
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.S)
+    private fun blurCheatBtn(){
+        val effect = RenderEffect.createBlurEffect(
+            10.0f,
+            10.0f,
+            Shader.TileMode.CLAMP
+        )
+        binding.cheatButton.setRenderEffect(effect)
     }
 
 }
