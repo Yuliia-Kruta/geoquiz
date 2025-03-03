@@ -24,15 +24,6 @@ class MainActivity : AppCompatActivity() {
 
     private val quizViewModel: QuizViewModel by viewModels()
 
-    /*private val cheatLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) {
-        result ->
-        if (result.resultCode == Activity.RESULT_OK){
-            quizViewModel.isCheater = result.data?.getBooleanExtra(EXTRA_ANSWER_SHOWN, false) ?: false
-        }
-    }*/
-
     private val cheatLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) {
@@ -111,10 +102,17 @@ class MainActivity : AppCompatActivity() {
         Log.d(TAG, "onDestroy() called")
     }
 
-    private fun updateQuestion(){
+    private fun updateQuestion() {
         val questionTextResId = quizViewModel.currentQuestionText
+        val questionNumber = quizViewModel.currentQuestionNumber
+        val totalQuestions = quizViewModel.totalQuestions
+
+        binding.questionNumberTextView.text = "Question $questionNumber of $totalQuestions"
         binding.questionTextView.setText(questionTextResId)
     }
+
+
+
 
     private fun checkAnswer(userAnswer: Boolean){
         val correctAnswer = quizViewModel.currentQuestionAnswer

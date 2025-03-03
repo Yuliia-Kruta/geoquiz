@@ -46,6 +46,12 @@ class QuizViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel(
     val currentQuestionText: Int
         get() = questionBank[currentIndex].textResId
 
+    val currentQuestionNumber: Int
+        get() = currentIndex + 1
+
+    val totalQuestions: Int
+        get() = questionBank.size
+
     val isCurrentQuestionCheated: Boolean
         get() = cheatStatus[currentIndex]
 
