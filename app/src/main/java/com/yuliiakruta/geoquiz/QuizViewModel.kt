@@ -4,9 +4,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 
 const val CURRENT_INDEX_KEY = "CURRENT_INDEX_KEY"
-//const val IS_CHEATER_KEY = "IS_CHEATER_KEY"
 const val CHEAT_STATUS_KEY = "CHEAT_STATUS_KEY"
 const val ANSWER_STATUS_KEY = "ANSWER_STATUS_KEY"
+const val SCORE_KEY = "SCORE_KEY"
 
 class QuizViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() {
 
@@ -45,6 +45,10 @@ class QuizViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel(
         get() = savedStateHandle.get(CURRENT_INDEX_KEY) ?: 0
         set(value) = savedStateHandle.set(CURRENT_INDEX_KEY, value)
 
+    private var score: Int
+        get() = savedStateHandle.get(SCORE_KEY) ?: 0
+        set(value) = savedStateHandle.set(SCORE_KEY, value)
+
     val currentQuestionAnswer: Boolean
         get() = questionBank[currentIndex].answer
 
@@ -79,19 +83,26 @@ class QuizViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel(
         }
     }
 
-    fun calculateScore() : Int{
-        return 0
-    }
-
     fun restartGame() {
         answerStatus = MutableList(questionBank.size) { false }
+        cheatStatus = MutableList(questionBank.size) { false }
         currentIndex = 0
+        score = 0
     }
 
-    fun moveToNext(){
+    fun incrementScore() {
+        score++
+    }
+
+    fun calculateScore(): Int {
+        return score
+    }
+
+    fun moveToNext() {
         currentIndex = (currentIndex + 1) % questionBank.size
     }
-    fun moveToPrev(){
+
+    fun moveToPrev() {
         currentIndex = (currentIndex - 1 + questionBank.size) % questionBank.size
     }
 }

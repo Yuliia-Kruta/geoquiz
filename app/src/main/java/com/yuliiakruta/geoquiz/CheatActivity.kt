@@ -31,11 +31,11 @@ class CheatActivity : AppCompatActivity() {
 
         cheatViewModel.answerIsTrue = intent.getBooleanExtra(EXTRA_ANSWER_IS_TRUE, false)
 
-        if(cheatViewModel.isAnswerShown){
+        if (cheatViewModel.isAnswerShown) {
             binding.answerTextView.setText(cheatViewModel.answerText)
             setAnswerShownResult()
         }
-        binding.showAnswerButton.setOnClickListener{
+        binding.showAnswerButton.setOnClickListener {
             binding.answerTextView.setText(cheatViewModel.answerText)
             cheatViewModel.isAnswerShown = true
             setAnswerShownResult()
@@ -43,7 +43,7 @@ class CheatActivity : AppCompatActivity() {
 
     }
 
-    private fun setAnswerShownResult(){
+    private fun setAnswerShownResult() {
         val data = Intent().apply {
             putExtra(EXTRA_ANSWER_SHOWN, cheatViewModel.isAnswerShown)
         }
@@ -51,7 +51,7 @@ class CheatActivity : AppCompatActivity() {
     }
 
     companion object {
-        fun newIntent(packageContext: Context, answerIsTrue: Boolean) : Intent {
+        fun newIntent(packageContext: Context, answerIsTrue: Boolean): Intent {
             return Intent(packageContext, CheatActivity::class.java).apply {
                 putExtra(EXTRA_ANSWER_IS_TRUE, answerIsTrue)
             }

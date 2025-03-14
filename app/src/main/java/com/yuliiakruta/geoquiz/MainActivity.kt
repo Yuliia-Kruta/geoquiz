@@ -19,6 +19,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.yuliiakruta.geoquiz.databinding.ActivityMainBinding
 
 private const val TAG = "MainActivity"
+private const val TAG_SCORE = "Score"
 
 class MainActivity : AppCompatActivity() {
 
@@ -132,9 +133,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun checkAnswer(userAnswer: Boolean) {
+
         val correctAnswer = quizViewModel.currentQuestionAnswer
         quizViewModel.markCurrentQuestionAsAnswered()
         updateDisabledButtons()
+        Log.d(TAG_SCORE, correctAnswer.toString())
+        Log.d(TAG_SCORE, userAnswer.toString())
+
+        if (userAnswer == correctAnswer) {
+            quizViewModel.incrementScore()
+            Log.d(TAG_SCORE, quizViewModel.calculateScore().toString())
+        }
 
         val messageResId = when {
             quizViewModel.isCurrentQuestionCheated -> R.string.judgement_toast
