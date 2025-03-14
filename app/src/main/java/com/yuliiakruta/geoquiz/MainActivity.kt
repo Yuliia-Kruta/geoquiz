@@ -6,11 +6,13 @@ import android.graphics.Shader
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -60,6 +62,14 @@ class MainActivity : AppCompatActivity() {
         binding.nextButton.setOnClickListener {
             quizViewModel.moveToNext()
             updateQuestion()
+        }
+
+        binding.finishButton.setOnClickListener {
+            if (quizViewModel.areAllQuestionsAnswered()) {
+                showScoreDialog()
+            } else {
+                Toast.makeText(this, "Answer all questions first!", Toast.LENGTH_SHORT).show()
+            }
         }
         binding.prevButton.setOnClickListener {
             quizViewModel.moveToPrev()
@@ -112,7 +122,11 @@ class MainActivity : AppCompatActivity() {
         binding.questionTextView.setText(questionTextResId)
         binding.prevButton.isEnabled = questionNumber > 1
         if (questionNumber == totalQuestions) {
-            binding.nextButton.text = getString(R.string.finish_button)
+            binding.nextButton.visibility = View.GONE
+            binding.finishButton.visibility = View.VISIBLE
+        } else {
+            binding.nextButton.visibility = View.VISIBLE
+            binding.finishButton.visibility = View.GONE
         }
         updateDisabledButtons()
     }
@@ -140,7 +154,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
     @RequiresApi(Build.VERSION_CODES.S)
     private fun blurCheatBtn() {
         val effect = RenderEffect.createBlurEffect(
@@ -148,5 +161,20 @@ class MainActivity : AppCompatActivity() {
         )
         binding.cheatButton.setRenderEffect(effect)
     }
+
+    private fun showScoreDialog() {
+        val score = quizViewModel.calculateScore()
+
+        AlertDialog.Builder(this)
+            .setTitle("Quiz Completed!")
+            .setMessage("Your Score: $score/${quizViewModel.totalQuestions}")
+            .setPositiveButton("Restart") { _, _ ->
+                quizViewModel.restartGame()
+                updateQuestion()
+            }
+            .setCancelable(false)
+            .show()
+    }
+
 
 }

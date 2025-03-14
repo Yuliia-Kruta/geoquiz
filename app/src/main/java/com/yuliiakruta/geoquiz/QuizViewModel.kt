@@ -63,6 +63,10 @@ class QuizViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel(
     val isCurrentQuestionAnswered: Boolean
         get() = answerStatus[currentIndex]
 
+    fun areAllQuestionsAnswered(): Boolean {
+        return answerStatus.all { it }
+    }
+
     fun markCurrentQuestionAsCheated() {
         cheatStatus = cheatStatus.also {
             it[currentIndex] = true
@@ -73,6 +77,15 @@ class QuizViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel(
         answerStatus = answerStatus.also {
             it[currentIndex] = true
         }
+    }
+
+    fun calculateScore() : Int{
+        return 0
+    }
+
+    fun restartGame() {
+        answerStatus = MutableList(questionBank.size) { false }
+        currentIndex = 0
     }
 
     fun moveToNext(){
