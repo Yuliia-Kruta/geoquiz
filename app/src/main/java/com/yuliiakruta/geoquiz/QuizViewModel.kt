@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 const val CURRENT_INDEX_KEY = "CURRENT_INDEX_KEY"
 //const val IS_CHEATER_KEY = "IS_CHEATER_KEY"
 const val CHEAT_STATUS_KEY = "CHEAT_STATUS_KEY"
+const val ANSWER_STATUS_KEY = "ANSWER_STATUS_KEY"
 
 class QuizViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() {
 
@@ -32,6 +33,10 @@ class QuizViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel(
         get() = savedStateHandle.get(CHEAT_STATUS_KEY) ?: MutableList(questionBank.size) { false }
         set(value) = savedStateHandle.set(CHEAT_STATUS_KEY, value)
 
+    private var answerStatus: MutableList<Boolean>
+        get() = savedStateHandle.get(ANSWER_STATUS_KEY) ?: MutableList(questionBank.size) { false }
+        set(value) = savedStateHandle.set(ANSWER_STATUS_KEY, value)
+
     /*var isCheater:Boolean
         get() = savedStateHandle.get(IS_CHEATER_KEY) ?: false
         set(value) = savedStateHandle.set(IS_CHEATER_KEY, value)*/
@@ -55,8 +60,17 @@ class QuizViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel(
     val isCurrentQuestionCheated: Boolean
         get() = cheatStatus[currentIndex]
 
+    val isCurrentQuestionAnswered: Boolean
+        get() = answerStatus[currentIndex]
+
     fun markCurrentQuestionAsCheated() {
         cheatStatus = cheatStatus.also {
+            it[currentIndex] = true
+        }
+    }
+
+    fun markCurrentQuestionAsAnswered() {
+        answerStatus = answerStatus.also {
             it[currentIndex] = true
         }
     }

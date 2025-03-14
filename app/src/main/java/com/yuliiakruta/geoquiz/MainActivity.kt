@@ -26,12 +26,13 @@ class MainActivity : AppCompatActivity() {
 
     private val cheatLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
-    ) {
-            result ->
-        if (result.resultCode == Activity.RESULT_OK){
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
             val isCheater = result.data?.getBooleanExtra(EXTRA_ANSWER_SHOWN, false) ?: false
             if (isCheater) {
                 quizViewModel.markCurrentQuestionAsCheated()
+                quizViewModel.markCurrentQuestionAsAnswered()
+                updateDisabledButtons()
             }
         }
     }
@@ -50,29 +51,29 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        binding.trueButton.setOnClickListener{
+        binding.trueButton.setOnClickListener {
             checkAnswer(true)
         }
-        binding.falseButton.setOnClickListener{
+        binding.falseButton.setOnClickListener {
             checkAnswer(false)
         }
-        binding.nextButton.setOnClickListener{
+        binding.nextButton.setOnClickListener {
             quizViewModel.moveToNext()
             updateQuestion()
         }
-        binding.prevButton.setOnClickListener{
+        binding.prevButton.setOnClickListener {
             quizViewModel.moveToPrev()
             updateQuestion()
         }
 
-        binding.cheatButton.setOnClickListener{
+        binding.cheatButton.setOnClickListener {
             val answerIsTrue = quizViewModel.currentQuestionAnswer
             val intent = CheatActivity.newIntent(this@MainActivity, answerIsTrue)
             cheatLauncher.launch(intent)
         }
 
         updateQuestion()
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             blurCheatBtn()
         }
     }
@@ -109,21 +110,19 @@ class MainActivity : AppCompatActivity() {
 
         binding.questionNumberTextView.text = "Question $questionNumber of $totalQuestions"
         binding.questionTextView.setText(questionTextResId)
+        binding.prevButton.isEnabled = questionNumber > 1
+        if (questionNumber == totalQuestions) {
+            binding.nextButton.text = getString(R.string.finish_button)
+        }
+        updateDisabledButtons()
     }
 
-
-
-
-    private fun checkAnswer(userAnswer: Boolean){
+    private fun checkAnswer(userAnswer: Boolean) {
         val correctAnswer = quizViewModel.currentQuestionAnswer
+        quizViewModel.markCurrentQuestionAsAnswered()
+        updateDisabledButtons()
 
-       /* val messageResId = when{
-            quizViewModel.isCheater -> R.string.judgement_toast
-            userAnswer == correctAnswer -> R.string.correct_toast
-            else -> R.string.incorrect_toast
-        }*/
-
-        val messageResId = when{
+        val messageResId = when {
             quizViewModel.isCurrentQuestionCheated -> R.string.judgement_toast
             userAnswer == correctAnswer -> R.string.correct_toast
             else -> R.string.incorrect_toast
@@ -132,13 +131,20 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show()
     }
 
+    private fun updateDisabledButtons() {
+        val isAnswered = quizViewModel.isCurrentQuestionAnswered
+        binding.apply {
+            trueButton.isEnabled = !isAnswered
+            falseButton.isEnabled = !isAnswered
+            cheatButton.isEnabled = !isAnswered
+        }
+    }
+
 
     @RequiresApi(Build.VERSION_CODES.S)
-    private fun blurCheatBtn(){
+    private fun blurCheatBtn() {
         val effect = RenderEffect.createBlurEffect(
-            10.0f,
-            10.0f,
-            Shader.TileMode.CLAMP
+            10.0f, 10.0f, Shader.TileMode.CLAMP
         )
         binding.cheatButton.setRenderEffect(effect)
     }
