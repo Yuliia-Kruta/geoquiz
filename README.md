@@ -1,6 +1,6 @@
 <h1 align="center">GeoQuiz</h1>
 <br/>
-<img align="right" src="./geoquiz.gif" width="20%" height="auto"/>
+<img align="right" src="./geoquiz.gif" width="50%" height="auto"/>
 
 <div id="user-content-toc">
   <ul align="left" style="list-style: none;">
